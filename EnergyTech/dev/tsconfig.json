@@ -1,0 +1,47 @@
+{
+	"compilerOptions": {
+		"target": "ES5",
+		"lib": [
+			"ESNext"
+		],
+		"outFile": "C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\build\\project\\sources\\main.js",
+		"experimentalDecorators": true,
+		"downlevelIteration": true,
+		"allowJs": true
+	},
+	"exclude": [
+		"**/node_modules/*",
+		"dom",
+		"webpack"
+	],
+	"include": [
+		"header.ts",
+		"translation.ts",
+		"common/interaction.ts",
+		"common/block/ore.ts",
+		"common/item/storage/battery.ts",
+		"common/machine/steam_boiler.ts",
+		"common/machine/electric/bending_machine.ts",
+		"common/machine/electric/compressor.ts",
+		"common/machine/electric/macerator.ts",
+		"common/machine/electric/mixer.ts",
+		"init/machine.ts",
+		"init/material.ts",
+		"init/recipe.ts",
+		"init/texture.ts"
+	],
+	"files": [
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\android-declarations.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\android.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\core-engine.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\chargeitem.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\energy-net.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\ItemName.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\LiquidLib.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\SoundLib.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\StorageInterface.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\TileRender.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\ToolLib.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\VanillaRecipe.d.ts"
+	]
+}

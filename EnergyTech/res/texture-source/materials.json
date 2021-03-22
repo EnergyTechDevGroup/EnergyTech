@@ -1,0 +1,621 @@
+{
+    "bronze": {
+        "translate": {
+            "zh": "青铜",
+            "ru": "Бронзовый"
+        },
+        "data": {
+            "color": "#FF8000",
+            "element": "Sn1Cu3",
+            "type": "metal",
+            "level": 3,
+            "durability": 400,
+            "efficiency": 6.8,
+            "damage": 3.5
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "copper": {
+        "translate": {
+            "zh": "铜",
+            "ru": "Медный"
+        },
+        "data": {
+            "color": "#FF8000",
+            "element": "Cu",
+            "type": "metal",
+            "level": 2,
+            "durability": 2100,
+            "efficiency": 5.3,
+            "damage": 3
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "diamond": {
+        "translate": {
+            "zh": "钻石",
+            "ru": "Алмазная"
+        },
+        "data": {
+            "color": "#C8FFFF",
+            "element": null,
+            "type": "gem",
+            "level": 4,
+            "durability": 15610,
+            "efficiency": 8,
+            "damage": 7
+        },
+        "elements": {
+            "block": {"cover": 57},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "gem": {"cover": 264},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "gold": {
+        "translate": {
+            "zh": "金",
+            "ru": "Золотая"
+        },
+        "data": {
+            "color": "#FFFF00",
+            "element": "Au",
+            "type": "metal",
+            "level": 3,
+            "durability": 330,
+            "efficiency": 12,
+            "damage": 4
+        },
+        "elements": {
+            "block": {"cover": 41},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {"cover": 266},
+            "nugget": {"cover": 371},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "iron": {
+        "translate": {
+            "zh": "铁",
+            "ru": "Железная"
+        },
+        "data": {
+            "color": "#AAAAAA",
+            "element": "Fe",
+            "type": "metal",
+            "level": 3,
+            "durability": 2040,
+            "efficiency": 6,
+            "damage": 4
+        },
+        "elements": {
+            "block": {"cover": 42},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {"cover": 265},
+            "nugget": {"cover": 452},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "lead": {
+        "translate": {
+            "zh": "铅",
+            "ru": "Свинцовая"
+        },
+        "data": {
+            "color": "#8C648C",
+            "element": "Pb",
+            "type": "metal",
+            "level": 2,
+            "durability": 4340,
+            "efficiency": 5.25,
+            "damage": 3.5
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "silver": {
+        "translate": {
+            "zh": "银",
+            "ru": "Серебряная"
+        },
+        "data": {
+            "color": "#DCDCFF",
+            "element": "Ag",
+            "type": "metal",
+            "level": 3,
+            "durability": 2500,
+            "efficiency": 5,
+            "damage": 5
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "steel": {
+        "translate": {
+            "zh": "钢",
+            "ru": "Стальная"
+        },
+        "data": {
+            "color": "#505050",
+            "element": null,
+            "type": "metal",
+            "level": 3,
+            "durability": 5400,
+            "efficiency": 7,
+            "damage": 6
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "tungsten": {
+        "translate": {
+            "zh": "钨"
+        },
+        "data": {
+            "color": "#323232",
+            "element": "W",
+            "type": "metal",
+            "level": 4,
+            "durability": 6320,
+            "efficiency": 7,
+            "damage": 8
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "aluminium": {
+        "translate": {
+            "zh": "铝"
+        },
+        "data": {
+            "color": "#80C8F0",
+            "element": "Al",
+            "type": "metal",
+            "level": 3,
+            "durability": 2250,
+            "efficiency": 10,
+            "damage": 5
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "tin": {
+        "translate": {
+            "zh": "锡",
+            "ru": "Оловянная"
+        },
+        "data": {
+            "color": "#DCDCDC",
+            "element": "Sn",
+            "type": "metal",
+            "level": 2,
+            "durability": 1500,
+            "efficiency": 4.5,
+            "damage": 5
+        },
+        "elements": {
+            "block": {},
+            "coil": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "americium": {
+        "translate": {
+            "zh": "镅"
+        },
+        "data": {
+            "color": "#C8C8C8",
+            "element": "Am",
+            "type": "metal",
+            "level": 4,
+            "durability": 7970,
+            "efficiency": 4.35,
+            "damage": 6.8
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "antimony": {
+        "translate": {
+            "zh": "锑"
+        },
+        "data": {
+            "color": "#DCDCC8",
+            "element": "Sb",
+            "type": "metal",
+            "level": 3,
+            "durability": 180,
+            "efficiency": 4.8,
+            "damage": 2.1
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "iridium": {
+        "translate": {
+            "zh": "铱",
+            "ru": "Иридиевый"
+        },
+        "data": {
+            "color": "#FFFFFF",
+            "element": "Ir",
+            "type": "metal",
+            "level": 4,
+            "durability": 5200,
+            "efficiency": 6,
+            "damage": 5.8
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "emerald": {
+        "translate": {
+            "zh": "绿宝石"
+        },
+        "data": {
+            "color": "#50FF50",
+            "element": null,
+            "type": "gem",
+            "level": 3,
+            "durability": 12220,
+            "efficiency": 7,
+            "damage": 7
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "gem": {"cover": 368},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    },
+    "niobium": {
+        "translate": {
+            "zh": "铌"
+        },
+        "data": {
+            "color": "#9486AA",
+            "element": null,
+            "type": "gem",
+            "level": 3,
+            "durability": 7000,
+            "efficiency": 4.5,
+            "damage": 4.5
+        },
+        "elements": {
+            "block": {},
+            "dust": {},
+            "dustImpure": {},
+            "dustSmall": {},
+            "dustTiny": {},
+            "ingot": {},
+            "nugget": {},
+            "ore": {"stone": "all"},
+            "oreSmall": {"stone": "all"},
+            "plate": {},
+            "hammer": {},
+            "sword": {},
+            "shovel": {},
+            "pickaxe": {},
+            "axe": {},
+            "hoe": {},
+            "wrench": {},
+            "mortar": {},
+            "cutter": {},
+            "file": {},
+            "saw": {},
+            "screwdriver": {}
+        }
+    }
+}
