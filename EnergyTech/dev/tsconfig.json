@@ -18,7 +18,6 @@
 		"header.ts",
 		"translation.ts",
 		"common/interaction.ts",
-		"common/block/ore.ts",
 		"common/item/storage/battery.ts",
 		"common/machine/steam_boiler.ts",
 		"common/machine/electric/bending_machine.ts",

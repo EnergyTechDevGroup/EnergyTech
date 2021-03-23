@@ -1,4 +1,5 @@
 /// <reference path="../init/material.ts"/>
+/// <reference path="../init/recipe.ts"/>
 
 Callback.addCallback("PreLoaded",() => {
     RecipeUtils.addRecipe("mixer",[
@@ -178,7 +179,7 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
 MaterialRegistry.registerInteractionFunction((material,meta) => {
     if(!meta.ingot || !meta.hammer) return false;
 
-    if(ic2){
+    if(ModLoader.ic2()){
         RecipeUtils.addShaped({id: meta.hammer,count: 1,data: 0},[
             [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},null],
             [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},{id: 280,data: 0}],

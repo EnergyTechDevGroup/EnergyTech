@@ -1,3 +1,5 @@
+/// <reference path="../../../init/machine.ts"/>
+
 var item_lithium_battery = IDRegistry.genItemID("ENERGYTECH_BATTERY_LITHIUM_BATTERY");
 Item.createItem("ENERGYTECH_BATTERY_LITHIUM_BATTERY","Lithium Battery",{name:"lithium_battery",meta:0},{stack:1,isTech:true});
 ChargeItemRegistry.registerItem(item_lithium_battery,"Eu",1e4,32,1,true,true);

@@ -12,7 +12,7 @@ VanillaRecipe.setResourcePath(__dir__ + "res/");
 
 var GUI_SCALE: number = 3.2;
 
-const EU = EnergyTypeRegistry.assureEnergyType("EU",1);
+const EU: EnergyType = EnergyTypeRegistry.assureEnergyType("Eu",1);
 
 function power(tier: number): number {
     return 32 * Math.pow(4,tier - 1);
@@ -32,7 +32,12 @@ Callback.addCallback("DestroyBlock",(coords,block,player) => {
     ToolLib.breakCarriedTool(Math.max(level*level,1),player);
 });
 
-var ic2 = false;
-ModAPI.addAPICallback("ICore",(api) => {
-    ic2 = true; 
-});
+class ModLoader {
+    static ic2(): boolean {
+        let loader = false;
+        ModAPI.addAPICallback("ICore",(api) => {
+            loader = true; 
+        });
+        return loader;
+    }
+}

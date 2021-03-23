@@ -32,84 +32,6 @@ Recipes.deleteRecipe({id: 278,count: 1,data: 0});
 Recipes.deleteRecipe({id: 279,count: 1,data: 0});
 Recipes.deleteRecipe({id: 293,count: 1,data: 0});
 
-var MaterialRegistry = {
-    interactionFunctions: [],
-
-    materials: {},
-
-    data: {},
-
-    registerMaterial(name,color: string,itemType: string,level: number): Material {
-        var material = this.getMaterial(name);
-        if(!material) material = new Material(name,color,itemType,level);
-        return material;
-    },
-
-    getMaterial(name): Material {
-        return this.materials[name];
-    },
-
-    getAll(material): number[] {
-        var item = [];
-        for(let i in this.data){
-            var data = this.data[i];
-            if(data[material]){
-                item.push(data[material]);
-            }
-        }
-        return item;
-    },
-
-    addMaterialElement(material: string,name: string,id: number,isArrow?: boolean){
-        if(!this.data[material]) this.data[material] = {}
-        if(!this.data[material][name] && isArrow){
-            this.data[material][name] = [];
-        }
-        if(Array.isArray(this.data[material][name])) {
-            this.data[material][name].push(id);
-        } else {
-            this.data[material][name] = id;
-        }
-    },
-
-    registerInteractionFunction(state: Function,type?: string) {
-        this.interactionFunctions.push({func: state,type: (type || "null")});
-    }
-}
-
-var materials = FileTools.ReadJSON(__dir__ + "res/texture-source/materials.json");
-for(let name in materials){
-    // tool material
-    var data = materials[name].data;
-    ToolAPI.addToolMaterial(name,data);
-
-    // material
-    var mate = MaterialRegistry.registerMaterial(name,data.color,data.type,data.level);
-    for(let type in materials[name].elements){
-        var element = materials[name].elements[type];
-        if(element.cover){
-            mate.addElement(type,element.cover);
-            if(type != "ore") continue;
-        }
-        var int1 = null;
-        if(type == "ore"){
-            int1 = (element.stone == "all"?StoneAll:element.stone);
-        }
-        mate[type](int1);
-    }
-    Callback.invokeCallback("et-material-translate",name,materials[name].translate);
-}
-
-Callback.addCallback("PreLoaded",() => {
-    for(let name in MaterialRegistry.data) {
-        var data = MaterialRegistry.data[name];
-        for(let i in MaterialRegistry.interactionFunctions) {
-            var interaction = MaterialRegistry.interactionFunctions[i];
-            interaction.func(name,data,(materials[name].data || {}));
-        }
-    }
-});
-
 class Material {
     private path: string = __dir__ + "res/";
 
@@ -349,7 +271,7 @@ class Material {
         state.stack = 1;
 
         var item = this._item(type,state);
-        ToolAPI.setTool(item,this.material,state.toolType || {});
+        ToolLib.setTool(item,this.material,state.toolType || {});
 
         ItemName.registerTooltipAddFunction(item,(item) => {
             var max = Item.getMaxDamage(item.id);
@@ -442,3 +364,81 @@ class Material {
         this.level = level;
     }
 }
+
+var MaterialRegistry = {
+    interactionFunctions: [],
+
+    materials: {},
+
+    data: {},
+
+    registerMaterial(name,color: string,itemType: string,level: number): Material {
+        var material = this.getMaterial(name);
+        if(!material) material = new Material(name,color,itemType,level);
+        return material;
+    },
+
+    getMaterial(name): Material {
+        return this.materials[name];
+    },
+
+    getAll(material): number[] {
+        var item = [];
+        for(let i in this.data){
+            var data = this.data[i];
+            if(data[material]){
+                item.push(data[material]);
+            }
+        }
+        return item;
+    },
+
+    addMaterialElement(material: string,name: string,id: number,isArrow?: boolean){
+        if(!this.data[material]) this.data[material] = {}
+        if(!this.data[material][name] && isArrow){
+            this.data[material][name] = [];
+        }
+        if(Array.isArray(this.data[material][name])) {
+            this.data[material][name].push(id);
+        } else {
+            this.data[material][name] = id;
+        }
+    },
+
+    registerInteractionFunction(state: Function,type?: string) {
+        this.interactionFunctions.push({func: state,type: (type || "null")});
+    }
+}
+
+var materials = FileTools.ReadJSON(__dir__ + "res/texture-source/materials.json");
+for(let name in materials){
+    // tool material
+    var data = materials[name].data;
+    ToolAPI.addToolMaterial(name,data);
+
+    // material
+    var mate = MaterialRegistry.registerMaterial(name,data.color,data.type,data.level);
+    for(let type in materials[name].elements){
+        var element = materials[name].elements[type];
+        if(element.cover){
+            mate.addElement(type,element.cover);
+            if(type != "ore") continue;
+        }
+        var int1 = null;
+        if(type == "ore"){
+            int1 = (element.stone == "all"?StoneAll:element.stone);
+        }
+        mate[type](int1);
+    }
+    Callback.invokeCallback("et-material-translate",name,materials[name].translate);
+}
+
+Callback.addCallback("PreLoaded",() => {
+    for(let name in MaterialRegistry.data) {
+        var data = MaterialRegistry.data[name];
+        for(let i in MaterialRegistry.interactionFunctions) {
+            var interaction = MaterialRegistry.interactionFunctions[i];
+            interaction.func(name,data,(materials[name].data || {}));
+        }
+    }
+});

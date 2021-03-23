@@ -113,6 +113,8 @@ var MachineRegistry =  {
             last_voltage: 0
         });
 
+        state.useEnergy = true;
+
         state.__tick__ = state.tick || function() {};
         state.tick = function(): any {
             this.__tick__();
@@ -143,6 +145,9 @@ var MachineRegistry =  {
         }
 
         state.energyReceive = state.energyReceive || function(type,amount,voltage): number {
+            // energy receive min limit
+            if(amount < this.getMinVoltage()) return 0;
+
             var energy = 0;
             if(voltage > this.getMaxVoltage()){
                 if(true){
@@ -176,6 +181,21 @@ var MachineRegistry =  {
             this.data.energy_extract = 0;
         }
         
+        ItemName.registerTooltipAddFunction(id,function(item){
+            var tile = TileEntity.getPrototype(item.id);
+            return Translation.translate("Power Tier") + ": " + tile.defaultValues.power_tier;
+        });
+
+        ItemName.registerTooltipAddFunction(id,function(item){
+            var tile = TileEntity.getPrototype(item.id);
+            return Translation.translate("Max Voltage") + ": " + power(tile.defaultValues.power_tier);
+        });
+
+        ItemName.registerTooltipAddFunction(id,function(item){
+            var tile = TileEntity.getPrototype(item.id);
+            return Translation.translate("Min Voltage") + ": " + Math.max(power(tile.defaultValues.power_tier - 1),0);
+        });
+
         this.registerPrototype(id,state);
         ICRender.getGroup("et-wire").add(id,-1);
         EnergyTileRegistry.addEnergyTypeForId(id,energy || EU);
@@ -200,27 +220,52 @@ var MachineRegistry =  {
         this.registerElectric(id,state,energy);
     },
 
-    updateUIHeader(window,text: string) {
-        var header = window.getWindow("header");
-        header.contentProvider.drawing[2].text = text;
-    },
-
     createInterface(id,state) {
         var tile = TileEntity.getPrototype(id);
         if(tile){
             tile.defaultValues.progress = 0;
 
-            StorageInterface.createInterface(id,this.setDefaultValues({
+            var prototype = {
                 isValidInput(item) {
                     return RecipeUtils.isValidInput(tile.getRecipeByName(),item);
                 }
-            },state,true));
+            }
+            for(let i in state){
+                prototype[i] = state[i]
+            }
+
+            StorageInterface.createInterface(id,prototype);
 
             tile._tick_ = tile.tick;
             tile.tick = function(){
                 this._tick_();
                 
-                RecipeUtils.executeRecipeToTileTick(tile.getRecipeByName(),this);
+                var recipe = this.recipe.getRecipe();
+                if(recipe){
+                    if(this.useEnergy){
+                        if(this.data.energy >= this.data.energy_consume){
+                            this.data.energy -= this.data.energy_consume;
+                            this.setActive(true);
+                        } else {
+                            this.setActive(false);
+                        }
+                    } else {
+                        this.setActive(true);
+                    }
+
+                    if(this.getActive()){
+                        this.data.progress += 1/(recipe.extra.work_time || this.data.work_time);
+                        if(this.data.progress.toFixed(3) >= 1){
+                            this.recipe.outSource();
+                            this.data.progress = 0;
+                        }
+                    }
+                } else {
+                    this.setActive(false);
+                    this.data.progress = 0;
+                }
+        
+                this.container.setScale("scaleProgress",this.data.progress/1);
             }
         }
     },
@@ -261,7 +306,7 @@ var MachineRegistry =  {
         if(!tank) tank = this.liquidStorage;
         var amount = tank.getAmount(liquid).toFixed(3);
         if(amount > 0){
-            var full = LiquidLib.getFullItem(input.id, input.data, liquid);
+            var full = LiquidLib.getFullItem(input.id,input.data,liquid);
             if(full && (output.id == full.id && output.data == full.data && output.count < Item.getMaxStack(full.id) || output.id == 0)){
                 if(amount >= full.amount){
                     tank.getLiquid(liquid,full.amount);
@@ -352,7 +397,7 @@ var MachineRegistry =  {
     }
 }
 
-function ContainerWindow(header,state: {drawing?: any[],text?: {[key: string]: any},elements: {[key: string]: any}}) {
+function ContainerWindow(name,state: {drawing?: any[],text?: {[key: string]: any},elements: {[key: string]: any}}) {
     state.drawing.push({"type": "bitmap","x": 900,"y": 325,"bitmap": "logo","scale": GUI_SCALE});
 
     if(state.text){
@@ -384,7 +429,7 @@ function ContainerWindow(header,state: {drawing?: any[],text?: {[key: string]: a
     
     var window = new UI.StandartWindow({
         standard:{
-            header: {text: {text: Translation.translate(header)}},
+            header: {text: {text: Translation.translate(name)}},
             inventory: {standard: true},
             background: {standard: true}
         },
@@ -394,7 +439,8 @@ function ContainerWindow(header,state: {drawing?: any[],text?: {[key: string]: a
     });
 
     Callback.addCallback("LevelLoaded",() => {
-        MachineRegistry.updateUIHeader(window,Translation.translate(header));
+        var header = window.getWindow("header");
+        header.contentProvider.drawing[2].text = Translation.translate(name);
     });
 
     return window;
@@ -402,7 +448,7 @@ function ContainerWindow(header,state: {drawing?: any[],text?: {[key: string]: a
 
 function BasicMachineUI(name) {
     return ContainerWindow(name,{
-        drawing:[
+        drawing: [
             {type:"bitmap",x:350,y:50,bitmap:"energy_background"},
             {type:"bitmap",x:600,y:175 + GUI_SCALE * 2,bitmap:"progress_background"},
         ],
@@ -411,12 +457,12 @@ function BasicMachineUI(name) {
             "textEnergy": Translation.translate("Energy: ") + "0/0Eu"
         },
     
-        elements:{
-            "slotSource":{type:"slot",x:350 + GUI_SCALE * 43,y:175},
-            "slotResult":{type:"slot",x:720,y:175,isValid:function(){return false;}},
+        elements: {
+            "slotSource": {type:"slot",x:350 + GUI_SCALE * 43,y:175},
+            "slotResult": {type:"slot",x:720,y:175,isValid:function(){return false;}},
     
-            "scaleProgress":{type:"scale",x:600,y:175 + GUI_SCALE * 2,direction:0,value:0.5,bitmap:"progress_scale"},
-            "scaleEnergy":{type:"scale",x:350 + GUI_SCALE * 6,y:50 + GUI_SCALE * 6,direction:1,value:0.5,bitmap:"energy_scale"}
+            "scaleProgress": {type:"scale",x:600,y:175 + GUI_SCALE * 2,direction:0,value:0.5,bitmap:"progress_scale"},
+            "scaleEnergy": {type:"scale",x:350 + GUI_SCALE * 6,y:50 + GUI_SCALE * 6,direction:1,value:0.5,bitmap:"energy_scale"}
         }
     });
 }

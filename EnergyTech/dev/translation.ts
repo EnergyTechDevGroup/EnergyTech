@@ -39,8 +39,11 @@ Translation.addTranslation("Mixer"       ,{zh: "搅拌机"  });
 Translation.addTranslation("Steam Boiler",{zh: "蒸汽锅炉"});
 
 // info
-Translation.addTranslation("Materials" ,{zh: "材料"});
-Translation.addTranslation("Level"     ,{zh: "等级"});
-Translation.addTranslation("Durability",{zh: "耐久"});
+Translation.addTranslation("Materials"  ,{zh: "材料"    });
+Translation.addTranslation("Level"      ,{zh: "等级"    });
+Translation.addTranslation("Durability" ,{zh: "耐久"    });
+Translation.addTranslation("Power Tier" ,{zh: "能源等级"});
+Translation.addTranslation("Max Voltage",{zh: "最高电压"});
+Translation.addTranslation("Min Voltage",{zh: "最低电压"});
 
 // materials translate: "res/texture-source/materials.json".
