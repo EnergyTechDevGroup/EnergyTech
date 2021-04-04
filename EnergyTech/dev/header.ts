@@ -4,13 +4,12 @@ IMPORT("ItemName");
 IMPORT("LiquidLib");
 /* IMPORT("SoundLib"); */
 IMPORT("StorageInterface");
+IMPORT("TileRecipe");
 IMPORT("TileRender");
 IMPORT("ToolLib");
-IMPORT("VanillaRecipe");
-
-VanillaRecipe.setResourcePath(__dir__ + "res/");
 
 var GUI_SCALE: number = 3.2;
+var ResDir: string = __dir__ + "res/";
 
 const EU: EnergyType = EnergyTypeRegistry.assureEnergyType("Eu",1);
 
@@ -28,16 +27,15 @@ function toTitleCase(string: string) {
 
 // the higher the block level, the higher the tool loss.
 Callback.addCallback("DestroyBlock",(coords,block,player) => {
-    var level = ToolAPI.getBlockDestroyLevel(block.id);
-    ToolLib.breakCarriedTool(Math.max(level*level,1),player);
+    var item = Entity.getCarriedItem(player);
+    if(ToolAPI.getToolData(item.id)){
+        var level = ToolAPI.getBlockDestroyLevel(block.id);
+        ToolLib.breakCarriedTool(Math.max(level*level,1),player);
+    }
 });
 
-class ModLoader {
-    static ic2(): boolean {
-        let loader = false;
-        ModAPI.addAPICallback("ICore",(api) => {
-            loader = true; 
-        });
-        return loader;
-    }
+// remove vanilla tools
+var VanillaToolIDs = [268,269,270,271,290,272,273,274,275,291,256,257,258,267,292,283,284,285,286,294,276,277,278,279,293];
+for(let i in VanillaToolIDs){
+    Recipes.deleteRecipe({id: VanillaToolIDs[i],count: 1,data: 0});
 }

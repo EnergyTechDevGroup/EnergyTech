@@ -5,28 +5,22 @@ Block.createBlock("machineCasing",[
     {name: "Machine Casing",texture: [["machine_casing",0]],inCreative: true}
 ]);
 
-var MachineRegistry =  {
-    machineIDs: {},
+namespace MachineRegistry {
+    let machineIDs = {}
 
-    isMachine(id): number {
-        return this.machineIDs[id];
-    },
+    export function isMachine(id: number): number {
+		return machineIDs[id];
+	}
 
-    setMachineDrop(id: number | string,casing?: number) {
-        Block.registerDropFunction(id,function(){
-            return [[casing || block_machine_casing,1,0]];
-        });
-    },
-
-    registerPrototype(id: number,state) {
-        this.machineIDs[id] = true;
+    export function registerPrototype(id: number,state) {
+        machineIDs[id] = true;
 
         state.useNetworkItemContainer = true;
 
         state.getScreenName = state.getScreenName || function(player,coords) {
             return "main";
         };
-        
+
         state.hasFullRotation = state.hasFullRotation || false;
 
         state.getFacing = state.getFacing || function() {
@@ -54,23 +48,22 @@ var MachineRegistry =  {
             return this.networkData.getBoolean("isActive");
         }
 
-        state.render = state.render || function() {
-            var block = this.getBlock();
-            TileRenderer.mapAtCoords(this.x,this.y,this.z,block.id,block.data + (this.getActive()?4:0) + (this.hasFullRotation?2:0));
+        state.mapAtCoords = function(data) {
+            TileRenderer.mapAtCoords(this.x,this.y,this.z,Network.serverToLocalId(this.networkData.getInt("blockId")),data);
         }
 
-        state.onRenderModel = state.onRenderModel || function() {
+        state.render = state.render || function() {
             if(this.getActive()){
-                this.render();
-            } else {
-                BlockRenderer.unmapAtCoords(this.x,this.y,this.z);
-            }
-        };
+				this.mapAtCoords(this.networkData.getInt("blockData"));
+			} else {
+				BlockRenderer.unmapAtCoords(this.x,this.y,this.z);
+			}
+        }
 
         state.clientLoad = state.clientLoad || function() {
-            this.onRenderModel();
+            this.render();
             this.networkData.addOnDataChangedListener((data,isExternal) => {
-                this.onRenderModel();
+                this.render();
             });
         };
 
@@ -79,13 +72,6 @@ var MachineRegistry =  {
         };
 
         state.setContainer = state.setContainer || function() {};
-
-        state.getBlock = function(){
-            return {
-                id: Network.serverToLocalId(this.networkData.getInt("blockId")),
-                data: this.networkData.getInt("blockData")
-            }
-        }
 
         state.init = function(){
             this.networkData.putInt("blockId",this.blockID);
@@ -98,9 +84,9 @@ var MachineRegistry =  {
         Block.setDestroyTime(id,3);
 
         TileEntity.registerPrototype(id,state);
-    },
+    }
 
-    registerElectric(id: number,state: any,energy?: any) {
+    export function registerElectric(id: number,state: any,energy?: any) {
         this.setDefaultValues(state.defaultValues,{
             power_tier: 1,
             energy: 0,
@@ -196,12 +182,12 @@ var MachineRegistry =  {
             return Translation.translate("Min Voltage") + ": " + Math.max(power(tile.defaultValues.power_tier - 1),0);
         });
 
-        this.registerPrototype(id,state);
+        registerPrototype(id,state);
         ICRender.getGroup("et-wire").add(id,-1);
         EnergyTileRegistry.addEnergyTypeForId(id,energy || EU);
-    },
+    }
 
-    registerGenerator(id: number,state: any,energy?: any) {
+    export function registerGenerator(id: number,state: any,energy?: any) {
         state.canReceiveEnergy = () => {
             return false;
         }
@@ -210,37 +196,31 @@ var MachineRegistry =  {
             return true;
         }
 
-        this.registerElectric(id,state,energy);
-    },
+        registerElectric(id,state,energy);
+    }
 
-    registerEnergySource(id: number,state: any,energy?: any) {
+    export function registerEnergySource(id: number,state: any,energy?: any) {
         state.isEnergySource = () => {
             return true;
         }
-        this.registerElectric(id,state,energy);
-    },
 
-    createInterface(id,state) {
+        registerElectric(id,state,energy);
+    }
+
+    export function createInterface(id,state) {
         var tile = TileEntity.getPrototype(id);
         if(tile){
             tile.defaultValues.progress = 0;
 
-            var prototype = {
-                isValidInput(item) {
-                    return RecipeUtils.isValidInput(tile.getRecipeByName(),item);
-                }
-            }
-            for(let i in state){
-                prototype[i] = state[i]
-            }
-
-            StorageInterface.createInterface(id,prototype);
+            StorageInterface.createInterface(id,setDefaultValues({
+                isValidInput: TileRecipe.isValidInput
+            },state,true));
 
             tile._tick_ = tile.tick;
             tile.tick = function(){
                 this._tick_();
                 
-                var recipe = this.recipe.getRecipe();
+                var recipe = this.tileRecipe.getValidRecipeData();
                 if(recipe){
                     if(this.useEnergy){
                         if(this.data.energy >= this.data.energy_consume){
@@ -256,7 +236,7 @@ var MachineRegistry =  {
                     if(this.getActive()){
                         this.data.progress += 1/(recipe.extra.work_time || this.data.work_time);
                         if(this.data.progress.toFixed(3) >= 1){
-                            this.recipe.outSource();
+                            this.tileRecipe.outSourceToSlot(recipe);
                             this.data.progress = 0;
                         }
                     }
@@ -265,25 +245,26 @@ var MachineRegistry =  {
                     this.data.progress = 0;
                 }
         
-                this.container.setScale("scaleProgress",this.data.progress/1);
+                this.container.setScale("scaleProgress",this.data.progress);
             }
         }
-    },
+    }
 
-    setDefaultValues(state: {[key: string]: any},values?: {[key: string]: any},exist?: boolean) {
-        if(values){
-            state = state || {};
-            for(let i in values){
-                if(exist || !state[i]) state[i] = values[i];
+    export function setDefaultValues(state: {[key: string]: any},values: {[key: string]: any},exist?: boolean) {
+        state = state || {};
+        for(let i in values){
+            if(exist || !state[i]){
+                state[i] = values[i];
             }
         }
-    },
+        return state;
+    }
 
-    getLiquidFromItem(liquid,input,output,tank) {
+    export function getLiquidFromItem(liquid,input,output,tank) {
         if(!tank) tank = this.liquidStorage;
         var storage = StorageInterface.getInterface(this);
         var empty = LiquidLib.getEmptyItem(input.id,input.data);
-        if(empty && (!liquid && storage.canReceiveLiquid(empty.liquid) || empty.liquid == liquid) && !this.liquidStorage.isFull(empty.liquid) && (output.id == empty.id && output.data == empty.data && output.count < Item.getMaxStack(empty.id) || output.id == 0)){
+        if(empty && (!liquid && storage.canReceiveLiquid(empty.liquid) || empty.liquid == liquid) && !tank.isFull(empty.liquid) && (output.id == empty.id && output.data == empty.data && output.count < Item.getMaxStack(empty.id) || output.id == 0)){
             var count = Math.min(Math.floor((tank.getLimit(empty.liquid) - tank.getAmount(liquid).toFixed(3))/empty.amount),1);
             if(count > 0){
                 tank.addLiquid(empty.liquid,empty.amount*count);
@@ -300,9 +281,9 @@ var MachineRegistry =  {
             return true;
         }
         return false;
-	},
+	}
 	
-	addLiquidToItem(liquid,input,output,tank) {
+	export function addLiquidToItem(liquid,input,output,tank) {
         if(!tank) tank = this.liquidStorage;
         var amount = tank.getAmount(liquid).toFixed(3);
         if(amount > 0){
@@ -324,12 +305,25 @@ var MachineRegistry =  {
                 }
             }
         }
-    },
+    }
 
-    setHeatTransportInitParams:function(id){
+    export function getFuelBurnDuration(name){
+		var slot = this.container.getSlot(name);
+		if(slot.id > 0){
+			var burn = Recipes.getFuelBurnDuration(slot.id,slot.data);
+			if(burn && !LiquidRegistry.getItemLiquid(slot.id,slot.data)){
+				slot.count--;
+                slot.validate();
+				return burn;
+			}
+		}
+		return 0;
+    }
+
+    export function setHeatTransportInitParams(id){
         var prototype = TileEntity.getPrototype(id);
 
-        this.setDefaultValues(prototype.defaultValues,{
+        setDefaultValues(prototype.defaultValues,{
             heat:0,
             heat_storage:0
         });
@@ -375,42 +369,30 @@ var MachineRegistry =  {
             
             if(this.data.heat > this.getHeatStorage()) this.data.heat = this.getHeatStorage();
         }
-    },
+    }
 
-    getShortForEnergy(energy) {
-        if(energy >= 1e9){
-            return Math.floor(energy / 1e8) / 10 + "G";
-        }
-        if(energy >= 1e6){
-            return Math.floor(energy / 1e5) / 10 + "M";
-        }
-        if(energy >= 1e3){
-            return Math.floor(energy / 1e2) / 10 + "K";
-        }
-        return energy;
-    },
-
-    addEnergyTooltipDisplay(id) {
-        ItemName.registerTooltipAddFunction(id,(item) => {
-            return this.getShortForEnergy(ChargeItemRegistry.getEnergyStored(item)) + "/" + this.getShortForEnergy(ChargeItemRegistry.getMaxCharge(item.id)) + " Eu";
+    export function setMachineDrop(id: number | string,casing?: number) {
+        Block.registerDropFunction(id,function(){
+            return [[casing || block_machine_casing,1,0]];
         });
     }
 }
 
 function ContainerWindow(name,state: {drawing?: any[],text?: {[key: string]: any},elements: {[key: string]: any}}) {
-    state.drawing.push({"type": "bitmap","x": 900,"y": 325,"bitmap": "logo","scale": GUI_SCALE});
+    state.drawing.push({type: "bitmap",x: 900,y: 325,bitmap: "logo",scale: GUI_SCALE});
 
     if(state.text){
         var index = 0;
 
         for(let i in state.text){
-            state.elements[i] = {"type": "text",font: {size: 15,color: android.graphics.Color.parseColor("#96dcdc")},x: 700,y: 75 + 30 * index++,width: 300,height: 30,text: state.text[i]}
+            var font = {size: 15,color: android.graphics.Color.parseColor("#96dcdc")};
+            state.elements[i] = {type: "text",font: font,x: 700,y: 75+30*index++,width: 300,height: 30,text: state.text[i]}
         }
 
         if(index > 1){
-            state.drawing.push({"type": "bitmap","x": 700 - GUI_SCALE * 4,"y": 75 - GUI_SCALE * 4,"bitmap": "info","scale": GUI_SCALE});   
+            state.drawing.push({type: "bitmap",x: 700-GUI_SCALE*4,y: 75-GUI_SCALE*4,bitmap: "info",scale: GUI_SCALE});   
         } else {
-            state.drawing.push({"type": "bitmap","x": 700 - GUI_SCALE * 4,"y": 75 - GUI_SCALE * 4,"bitmap": "info_small","scale": GUI_SCALE});
+            state.drawing.push({type: "bitmap",x: 700-GUI_SCALE*4,y: 75-GUI_SCALE*4,bitmap: "info_small",scale: GUI_SCALE});
         }
     }
 
@@ -422,9 +404,7 @@ function ContainerWindow(name,state: {drawing?: any[],text?: {[key: string]: any
     for(let i in state.elements){
         var element = state.elements[i];
         element.scale = element.scale || GUI_SCALE;
-        if(element.type == "slot"){
-            element.bitmap = "slot_empty";
-        }
+        if(element.type == "slot") element.bitmap = element.bitmap || "slot_empty";
     }
     
     var window = new UI.StandartWindow({
@@ -454,15 +434,15 @@ function BasicMachineUI(name) {
         ],
     
         text: {
-            "textEnergy": Translation.translate("Energy: ") + "0/0Eu"
+            "textEnergy": Translation.translate("Energy") + ": " + "0/0Eu"
         },
     
         elements: {
-            "slotSource": {type:"slot",x:350 + GUI_SCALE * 43,y:175},
-            "slotResult": {type:"slot",x:720,y:175,isValid:function(){return false;}},
+            "slotSource": {type: "slot",x: 350+GUI_SCALE*43,y: 175},
+            "slotResult": {type: "slot",x: 720             ,y: 175,isValid(){return false;}},
     
-            "scaleProgress": {type:"scale",x:600,y:175 + GUI_SCALE * 2,direction:0,value:0.5,bitmap:"progress_scale"},
-            "scaleEnergy": {type:"scale",x:350 + GUI_SCALE * 6,y:50 + GUI_SCALE * 6,direction:1,value:0.5,bitmap:"energy_scale"}
+            "scaleProgress": {type: "scale",x: 600            ,y: 175+GUI_SCALE*2,direction: 0,value: 0.5,bitmap: "progress_scale"},
+            "scaleEnergy"  : {type: "scale",x: 350+GUI_SCALE*6,y: 50+GUI_SCALE*6 ,direction: 1,value: 0.5,bitmap: "energy_scale"  }
         }
     });
 }

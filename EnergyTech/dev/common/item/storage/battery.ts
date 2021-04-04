@@ -1,9 +1,9 @@
-/// <reference path="../../../init/machine.ts"/>
+/// <reference path="../../../init/tooltip.ts"/>
 
 var item_lithium_battery = IDRegistry.genItemID("ENERGYTECH_BATTERY_LITHIUM_BATTERY");
 Item.createItem("ENERGYTECH_BATTERY_LITHIUM_BATTERY","Lithium Battery",{name:"lithium_battery",meta:0},{stack:1,isTech:true});
 ChargeItemRegistry.registerItem(item_lithium_battery,"Eu",1e4,32,1,true,true);
-MachineRegistry.addEnergyTooltipDisplay(item_lithium_battery);
+Tooltip.addEnergyDisplay(item_lithium_battery);
 
 Item.registerIconOverrideFunction(item_lithium_battery,function(item){
 	return {name: "lithium_battery",meta: Math.round((27 - item.data) / 26 * 6)}
@@ -12,7 +12,7 @@ Item.registerIconOverrideFunction(item_lithium_battery,function(item){
 var item_nuclear_battery = IDRegistry.genItemID("ENERGYTECH_BATTERY_NUCLEAR_BATTERY");
 Item.createItem("ENERGYTECH_BATTERY_NUCLEAR_BATTERY","Nuclear Battery",{name:"nuclear_battery",meta:0},{stack:1,isTech:true});
 ChargeItemRegistry.registerItem(item_nuclear_battery,"Eu",1e9,32,1,true,true);
-MachineRegistry.addEnergyTooltipDisplay(item_nuclear_battery);
+Tooltip.addEnergyDisplay(item_nuclear_battery);
 
 Item.registerIconOverrideFunction(item_nuclear_battery,function(item){
 	return {name: "nuclear_battery",meta: Math.round((27 - item.data) / 26 * 6)}

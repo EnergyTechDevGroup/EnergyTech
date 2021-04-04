@@ -19,6 +19,7 @@
 		"translation.ts",
 		"common/interaction.ts",
 		"common/item/storage/battery.ts",
+		"common/machine/combustor.ts",
 		"common/machine/steam_boiler.ts",
 		"common/machine/electric/bending_machine.ts",
 		"common/machine/electric/compressor.ts",
@@ -26,8 +27,12 @@
 		"common/machine/electric/mixer.ts",
 		"init/machine.ts",
 		"init/material.ts",
+		"init/material_create.ts",
+		"init/material_type.ts",
+		"init/mod_loader.ts",
 		"init/recipe.ts",
-		"init/texture.ts"
+		"init/texture.ts",
+		"init/tooltip.ts"
 	],
 	"files": [
 		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\android-declarations.d.ts",
@@ -39,8 +44,8 @@
 		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\LiquidLib.d.ts",
 		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\SoundLib.d.ts",
 		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\StorageInterface.d.ts",
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\TileRecipe.d.ts",
 		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\TileRender.d.ts",
-		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\ToolLib.d.ts",
-		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\VanillaRecipe.d.ts"
+		"C:\\Users\\Wheat\\Desktop\\EnergyTech\\toolchain\\declarations\\lib\\ToolLib.d.ts"
 	]
 }

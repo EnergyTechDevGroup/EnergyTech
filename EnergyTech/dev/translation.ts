@@ -39,6 +39,7 @@ Translation.addTranslation("Mixer"       ,{zh: "搅拌机"  });
 Translation.addTranslation("Steam Boiler",{zh: "蒸汽锅炉"});
 
 // info
+Translation.addTranslation("Heat"       ,{zh: "热量"    });
 Translation.addTranslation("Materials"  ,{zh: "材料"    });
 Translation.addTranslation("Level"      ,{zh: "等级"    });
 Translation.addTranslation("Durability" ,{zh: "耐久"    });

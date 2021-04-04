@@ -17,26 +17,28 @@ MachineRegistry.registerElectric(block_macerator,{
         energy_storage:10000
     },
 
-    getRecipeByName: function() {
+    getRecipeByName() {
         return "macerator";
     },
 
-    getScreenByName: function() {
+    getScreenByName() {
         return BasicMachineUI("Macerator");
     },
 
-    render: function() {
-        var config_side = (this.hasFullRotation?6:4);
-        var config_count = 3;
-        var config_active = false;
+    render() {
+        var config_count = 2;
 
-        if(World.getWorldTime()%20 == 0){
-            var block = this.getBlock();
-            TileRenderer.mapAtCoords(this.x,this.y,this.z,block.id,block.data + (this.getActive()?Math.floor(this.data.progress*config_count*config_side+(config_active?config_side:0)):0));
+        // render
+        var data = this.networkData.getInt("blockData");
+        if(this.getActive()){
+            let meta = Math.round(this.data.progress/1*config_count);
+            this.mapAtCoords(data+(this.hasFullRotation?6:4)*meta);
+        } else {
+            BlockRenderer.unmapAtCoords(this.x,this.y,this.z);
         }
     },
 
-    tick: function() {
+    tick() {
         this.render();
     }
 });

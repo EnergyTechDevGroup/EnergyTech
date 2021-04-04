@@ -5,8 +5,7 @@ Block.createBlock("ENERGYTECH_MACHINE_BENDING_MACHINE",[
     {name:"Bending Machine",texture:[["machine_casing",0],["machine_casing",0],["machine_casing",0],["machine",0],["machine_casing",0],["machine_casing",0]],inCreative:true}
 ]);
 TileRenderer.setStandardModelWithRotation(block_bending_machine,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["machine",0],["machine_casing",0],["machine_casing",0]]);
-TileRenderer.registerModelWithRotation(block_bending_machine,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["machine",0],["machine_casing",0],["machine_casing",0]]);
-TileRenderer.registerModelWithRotation(block_bending_machine,6,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["machine",1],["machine_casing",0],["machine_casing",0]]);
+TileRenderer.registerModelWithRotation(block_bending_machine,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["machine",1],["machine_casing",0],["machine_casing",0]]);
 TileRenderer.setRotationFunction(block_bending_machine);
 
 MachineRegistry.setMachineDrop(block_bending_machine);
@@ -17,11 +16,11 @@ MachineRegistry.registerElectric(block_bending_machine,{
         energy_storage: 10000
     },
 
-    getRecipeByName: function() {
+    getRecipeByName() {
         return "bending_machine";
     },
 
-    getScreenByName: function() {
+    getScreenByName() {
         return BasicMachineUI("Bending Machine");
     }
 });

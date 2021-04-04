@@ -5,19 +5,18 @@ Block.createBlock("ENERGYTECH_MACHINE_STEAM_BOILER",[
     {name:"Steam Boiler",texture:[["machine_casing",0],["machine_casing",0],["machine_casing",0],["steam_boiler",0],["machine_casing",0],["machine_casing",0]],inCreative:true}
 ]);
 TileRenderer.setStandardModelWithRotation(block_steam_boiler,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["steam_boiler",0],["machine_casing",0],["machine_casing",0]]);
-TileRenderer.registerModelWithRotation(block_steam_boiler,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["steam_boiler",0],["machine_casing",0],["machine_casing",0]]);
-TileRenderer.registerModelWithRotation(block_steam_boiler,6,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["steam_boiler",1],["machine_casing",0],["machine_casing",0]]);
+TileRenderer.registerModelWithRotation(block_steam_boiler,2,[["machine_casing",0],["machine_casing",0],["machine_casing",0],["steam_boiler",1],["machine_casing",0],["machine_casing",0]]);
 TileRenderer.setRotationFunction(block_steam_boiler);
 
 MachineRegistry.setMachineDrop(block_steam_boiler);
 MachineRegistry.registerPrototype(block_steam_boiler,{
-    defaultValues:{
+    defaultValues: {
 		progress: 0,
 		work_time: 120,
 		heat_storage: 1000
     },
 
-    canReceiveHeat(side) {
+    canReceiveHeat() {
         return true;
     },
 
@@ -25,23 +24,23 @@ MachineRegistry.registerPrototype(block_steam_boiler,{
 		return false;
     },
 
-    getGuiScreen() {
+    getScreenByName() {
 		return ContainerWindow("Steam Boiler",{
-            drawing:[
-                {type:"bitmap",x:825 - GUI_SCALE * 3,y:147 - GUI_SCALE * 6,bitmap:"liquid_background"},
-                {type:"bitmap",x:882 - GUI_SCALE * 3,y:147 - GUI_SCALE * 6,bitmap:"liquid_background"},
+            drawing: [
+                {type: "bitmap",x: 825-GUI_SCALE*3,y: 147-GUI_SCALE*6,bitmap: "liquid_background"},
+                {type: "bitmap",x: 882-GUI_SCALE*3,y: 147-GUI_SCALE*6,bitmap: "liquid_background"},
             ],
         
             text: {
-                "textHeat": Translation.translate("Heat: ") + "0/0Hu"
+                "textHeat": Translation.translate("Heat") + ": " + "0/0Hu"
             },
         
             elements: {
-                "scaleLiquid1":{type:"scale",x:825 + GUI_SCALE * 3,y:147,direction:1,value:0.5,bitmap:"liquid_water",overlay:"liquid_scale"},
-                "scaleLiquid2":{type:"scale",x:882 + GUI_SCALE * 3,y:147,direction:1,value:0.5,bitmap:"liquid_steam",overlay:"liquid_scale"},
+                "scaleLiquid1": {type:"scale", x:825+GUI_SCALE*3,y: 147,direction: 1,value: 0.5,bitmap: "liquid_water",overlay: "liquid_scale"},
+                "scaleLiquid2": {type:"scale", x:882+GUI_SCALE*3,y: 147,direction: 1,value: 0.5,bitmap: "liquid_steam",overlay: "liquid_scale"},
                 
-                "slotLiquid1":{type:"slot",x:670,y:325,bitmap:"slot_bucket",isValid:function(id,count,data){return LiquidLib.getItemLiquid(id,data) == "water";}},
-                "slotLiquid2":{type:"slot",x:730,y:325,bitmap:"slot_bucket",isValid:function(){return false;}}
+                "slotLiquid1": {type: "slot",x: 670,y: 325,bitmap: "slot_bucket",isValid(id,count,data){return LiquidLib.getItemLiquid(id,data) == "water";}},
+                "slotLiquid2": {type: "slot",x: 730,y: 325,bitmap: "slot_bucket",isValid(){return false;}}
             }
         });
     },
@@ -85,7 +84,7 @@ MachineRegistry.registerPrototype(block_steam_boiler,{
 
         this.waterTank.updateUiScale("scaleLiquid1");
 		this.steamTank.updateUiScale("scaleLiquid2");
-		this.container.setText("textHeat",Translation.translate("Heat: ") + this.data.heat + "/" + this.getHeatStorage() + "Hu");
+		this.container.setText("textHeat",Translation.translate("Heat") + ": " + this.data.heat + "/" + this.getHeatStorage() + "Hu");
 	},
 
 	getLiquidFromItem: MachineRegistry.getLiquidFromItem

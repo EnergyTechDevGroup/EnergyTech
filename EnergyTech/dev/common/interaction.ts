@@ -23,21 +23,21 @@ Callback.addCallback("PreLoaded",() => {
         {id: ItemID.dustTinyBronze,count: 4,data: 0}
     ],64);
 
-    RecipeUtils.addCraftingShapeless({id: ItemID.dustBronze,count: 4,data: 0},[
+    RecipeUtils.addShapeless({id: ItemID.dustBronze,count: 4,data: 0},[
         {id: ItemID.dustTin,data: 0},
         {id: ItemID.dustCopper,data: 0},
         {id: ItemID.dustCopper,data: 0},
         {id: ItemID.dustCopper,data: 0}
     ]);
     
-    RecipeUtils.addCraftingShapeless({id: ItemID.dustSmallBronze,count: 4,data: 0},[
+    RecipeUtils.addShapeless({id: ItemID.dustSmallBronze,count: 4,data: 0},[
         {id: ItemID.dustSmallTin,data: 0},
         {id: ItemID.dustSmallCopper,data: 0},
         {id: ItemID.dustSmallCopper,data: 0},
         {id: ItemID.dustSmallCopper,data: 0}
     ]);
 
-    RecipeUtils.addCraftingShapeless({id: ItemID.dustTinyBronze,count: 4,data: 0},[
+    RecipeUtils.addShapeless({id: ItemID.dustTinyBronze,count: 4,data: 0},[
         {id: ItemID.dustTinyTin,data: 0},
         {id: ItemID.dustTinyCopper,data: 0},
         {id: ItemID.dustTinyCopper,data: 0},
@@ -54,7 +54,7 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
         [{id: meta.nugget,data: 0},{id: meta.nugget,data: 0},{id: meta.nugget,data: 0}]
     ]);
 
-    RecipeUtils.addCraftingShapeless({id: meta.nugget,count: 9,data: 0},[
+    RecipeUtils.addShapeless({id: meta.nugget,count: 9,data: 0},[
         {id: meta.ingot,data: 0}
     ]);
 });
@@ -68,7 +68,7 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
         [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},{id: meta.ingot,data: 0}]
     ]);
 
-    RecipeUtils.addCraftingShapeless({id: meta.ingot,count: 9,data: 0},[
+    RecipeUtils.addShapeless({id: meta.ingot,count: 9,data: 0},[
         {id: meta.block,data: 0}
     ]);
 });
@@ -82,7 +82,7 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
         [{id: meta.dustSmall,data: 0},{id: meta.dustSmall,data: 0},{id: meta.dustSmall,data: 0}]
     ]);
 
-    RecipeUtils.addCraftingShapeless({id: meta.dustSmall,count: 9,data: 0},[
+    RecipeUtils.addShapeless({id: meta.dustSmall,count: 9,data: 0},[
         {id: meta.dust,data: 0}
     ]);
 });
@@ -96,7 +96,7 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
         [{id: meta.dustTiny,data: 0},{id: meta.dustTiny,data: 0},{id: meta.dustTiny,data: 0}]
     ]);
 
-    RecipeUtils.addCraftingShapeless({id: meta.dustTiny,count: 9,data: 0},[
+    RecipeUtils.addShapeless({id: meta.dustTiny,count: 9,data: 0},[
         {id: meta.dustSmall,data: 0}
     ]);
 });
@@ -138,14 +138,14 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
     }
 });
 
-MaterialRegistry.registerInteractionFunction((material,meta) => {
+MaterialRegistry.registerInteractionFunction((material,meta,data) => {
     if(!meta.ingot || !meta.dust) return false;
     
     RecipeUtils.addRecipe("macerator",[
         {id: meta.ingot,count: 1,data: 0}
     ],[
         {id: meta.dust,count: 1,data: 0}
-    ],data*64);
+    ],data.level*64);
 });
 
 MaterialRegistry.registerInteractionFunction((material,meta,data) => {
@@ -155,7 +155,7 @@ MaterialRegistry.registerInteractionFunction((material,meta,data) => {
         {id: meta.nugget,count: 1,data: 0}
     ],[
         {id: meta.dustSmall,count: 1,data: 0}
-    ],data*64);
+    ],data.level*64);
 });
 
 MaterialRegistry.registerInteractionFunction((material,meta) => {
@@ -194,6 +194,24 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
     }
 },"hammer");
 
+MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.gem || !meta.hammer) return false;
+
+    if(ModLoader.ic2()){
+        RecipeUtils.addShaped({id: meta.hammer,count: 1,data: 0},[
+            [{id: meta.gem,data: 0},{id: meta.gem,data: 0},null],
+            [{id: meta.gem,data: 0},{id: meta.gem,data: 0},{id: 280,data: 0}],
+            [{id: meta.gem,data: 0},{id: meta.gem,data: 0},null]
+        ]);
+    } else {
+        RecipeUtils.addShaped({id: meta.hammer,count: 1,data: 0},[
+            [null,{id: meta.gem,data: 0},{id: 287,data: 0}],
+            [null,{id: 280,data: 0},{id: meta.gem,data: 0}],
+            [{id: 280,data: 0},null,null]
+        ]);
+    }
+},"hammer");
+
 MaterialRegistry.registerInteractionFunction((material,meta,data) => {
     if(!meta.ingot || !meta.plate) return false;
     var hammer = MaterialRegistry.getAll("hammer");
@@ -208,7 +226,24 @@ MaterialRegistry.registerInteractionFunction((material,meta,data) => {
         {id: meta.ingot,const: 1,data: 0}
     ],[
         {id: meta.plate,const: 1,data: 0}
-    ],data*64);
+    ],data.level*64);
+},"plate");
+ 
+MaterialRegistry.registerInteractionFunction((material,meta,data) => {
+    if(!meta.gem || !meta.plate) return false;
+    var hammer = MaterialRegistry.getAll("hammer");
+    for(let i in hammer){
+        RecipeUtils.addShaped({id: meta.plate,count: 1,data: 0},[
+            [{id: hammer[i],data: -1,damage: 20}],
+            [{id: meta.gem,data: 0}],
+            [{id: meta.gem,data: 0}]
+        ]);
+    }
+    RecipeUtils.addRecipe("bending_machine",[
+        {id: meta.gem,const: 1,data: 0}
+    ],[
+        {id: meta.plate,const: 1,data: 0}
+    ],data.level*64);
 },"plate");
 
 MaterialRegistry.registerInteractionFunction((material,meta) => {
@@ -216,6 +251,15 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
     RecipeUtils.addShaped({id:  meta.sword,count: 1,data: 0},[
         [{id: meta.ingot,data: 0}],
         [{id: meta.ingot,data: 0}],
+        [{id: 280,data: 0}]
+    ]);
+},"sword");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.sword || !meta.gem) return false;
+    RecipeUtils.addShaped({id:  meta.sword,count: 1,data: 0},[
+        [{id: meta.gem,data: 0}],
+        [{id: meta.gem,data: 0}],
         [{id: 280,data: 0}]
     ]);
 },"sword");
@@ -230,9 +274,27 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
 },"shovel");
 
 MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.shovel || !meta.gem) return false;
+    RecipeUtils.addShaped({id: meta.shovel,count: 1,data: 0},[
+        [{id: meta.gem,data: 0}],
+        [{id: 280,data: 0}],
+        [{id: 280,data: 0}]
+    ]);
+},"shovel");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
     if(!meta.pickaxe || !meta.ingot) return false;
     RecipeUtils.addShaped({id: meta.pickaxe,count: 1,data: 0},[
         [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},{id: meta.ingot,data: 0}],
+        [null,{id: 280,data: 0},null],
+        [null,{id: 280,data: 0},null]
+    ]);
+},"pickaxe");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.pickaxe || !meta.gem) return false;
+    RecipeUtils.addShaped({id: meta.pickaxe,count: 1,data: 0},[
+        [{id: meta.gem,data: 0},{id: meta.gem,data: 0},{id: meta.gem,data: 0}],
         [null,{id: 280,data: 0},null],
         [null,{id: 280,data: 0},null]
     ]);
@@ -253,6 +315,20 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
 },"axe");
 
 MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.axe || !meta.gem) return false;
+    RecipeUtils.addShaped({id: meta.axe,count: 1,data: 0},[
+        [{id: meta.gem,data: 0},{id: meta.gem,data: 0},null],
+        [{id: meta.gem,data: 0},{id: 280,data: 0},null],
+        [null,{id: 280,data: 0},null]
+    ]);
+    RecipeUtils.addShaped({id:  meta.axe,count: 1,data: 0},[
+        [null,{id: meta.gem,data: 0},{id: meta.gem,data: 0}],
+        [null,{id: 280,data: 0},{id: meta.gem,data: 0}],
+        [null,{id: 280,data: 0},null]
+    ]);
+},"axe");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
     if(!meta.hoe || !meta.ingot) return false;
     RecipeUtils.addShaped({id: meta.hoe,count: 1,data: 0},[
         [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},null],
@@ -267,11 +343,34 @@ MaterialRegistry.registerInteractionFunction((material,meta) => {
 },"hoe");
 
 MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.hoe || !meta.gem) return false;
+    RecipeUtils.addShaped({id: meta.hoe,count: 1,data: 0},[
+        [{id: meta.gem,data: 0},{id: meta.gem,data: 0},null],
+        [null,{id: 280,data: 0},null],
+        [null,{id: 280,data: 0},null]
+    ]);
+    RecipeUtils.addShaped({id:  meta.hoe,count: 1,data: 0},[
+        [null,{id: meta.gem,data: 0},{id: meta.gem,data: 0}],
+        [null,{id: 280,data: 0},null],
+        [null,{id: 280,data: 0},null]
+    ]);
+},"hoe");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
     if(!meta.wrench || !meta.ingot) return false;
     RecipeUtils.addShaped({id: meta.wrench,count: 1,data: 0},[
         [{id: meta.ingot,data: 0},null,{id: meta.ingot,data: 0}],
         [{id: meta.ingot,data: 0},{id: meta.ingot,data: 0},{id: meta.ingot,data: 0}],
         [null,{id: meta.ingot,data: 0},null]
+    ]);
+},"wrench");
+
+MaterialRegistry.registerInteractionFunction((material,meta) => {
+    if(!meta.wrench || !meta.gem) return false;
+    RecipeUtils.addShaped({id: meta.wrench,count: 1,data: 0},[
+        [{id: meta.gem,data: 0},null,{id: meta.gem,data: 0}],
+        [{id: meta.gem,data: 0},{id: meta.gem,data: 0},{id: meta.gem,data: 0}],
+        [null,{id: meta.gem,data: 0},null]
     ]);
 },"wrench");
 
